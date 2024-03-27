@@ -11,19 +11,17 @@ export const ScrollableMembers: React.FC = () => {
           href={getMemberPath(member.id)}
           passHref
         >
-          <a className="scrollable-member__link">
-            <span className="scrollable-member__image">
-              <img
-                src={member.avatarSrc}
-                alt={member.name}
-                className="scrollable-member__img"
-                width={80}
-                height={80}
-              />
-            </span>
-            <span className="scrollable-member__name">{member.name}</span>
-            <span className="scrollable-member__role">{member.role}</span>
-          </a>
+          <span className="scrollable-member__image">
+            <img
+              src={member.avatarSrc}
+              alt={member.name}
+              className="scrollable-member__img"
+              width={80}
+              height={80}
+            />
+          </span>
+          <span className="scrollable-member__name">{member.name}</span>
+          <span className="scrollable-member__role">{member.role}</span>
         </Link>
       ))}
     </div>
