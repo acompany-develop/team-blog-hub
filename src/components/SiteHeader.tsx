@@ -3,18 +3,18 @@ import { config } from "@site.config";
 
 import { ContentWrapper } from "@src/components/ContentWrapper";
 
-export const SiteHeader: React.FC = () => (
-  <header className="site-header">
+export const SiteHeader = () => (
+  <header className="py-1 bg-slate-200">
     <ContentWrapper>
-      <div className="site-header__inner">
+      <div className="flex items-center justify-between">
         <Link href="/" passHref>
           <img
-            src="/logo.svg"
+            src="/color_logo.png"
             alt={config.siteMeta.title}
-            className="site-header__logo-img"
+            className="h-14"
           />
         </Link>
-        <div className="site-header__links">
+        <div className="flex items-center gap-3">
           {config.headerLinks.map((link, i) => {
             const key = `header-link-${i}`;
             if (link.href.startsWith("/")) {
@@ -25,7 +25,7 @@ export const SiteHeader: React.FC = () => (
               );
             }
             return (
-              <a key={key} href={link.href} className="site-header__link">
+              <a key={key} href={link.href} className="ml-2 text-sm">
                 {link.title}
               </a>
             );

@@ -13,12 +13,8 @@ import {
   getMemberPath,
 } from "@src/utils/helper";
 
-type Props = {
-  postItems: PostItem[];
-  member: Member;
-};
-
-const Page: NextPage<Props> = (props) => {
+export default async function Page({ params }: { params: { id: string } }) {
+  const { member, postItems } = await getPosts(params);
   const {
     id,
     name,
@@ -27,33 +23,33 @@ const Page: NextPage<Props> = (props) => {
     twitterUsername,
     githubUsername,
     websiteUrl,
-  } = props.member;
+  } = member;
 
   return (
     <>
       <PageSEO title={name} path={getMemberPath(id)} />
       <section className="member">
         <ContentWrapper>
-          <header className="member-header">
+          <header className="flex flex-col items-center gap-4 max-w-xl mx-auto my-10">
             <div className="member-header__avatar">
               <img
                 src={avatarSrc}
                 alt={name}
                 width={100}
                 height={100}
-                className="member-header__avatar-img"
+                className="rounded"
               />
             </div>
-            <h1 className="member-header__name">{name}</h1>
+            <h1 className="text-2xl font-bold">{name}</h1>
             <p className="member-header__bio">{bio}</p>
-            <div className="member-header__links">
+            <div className="flex gap-2">
               {twitterUsername && (
                 <a
                   href={`https://twitter.com/${twitterUsername}`}
-                  className="member-header__link"
+                  className="bg-slate-300 p-2 rounded"
                 >
                   <FaTwitter
-                    className="member-header__link-icon"
+                    className="text-2xl"
                     aria-label={`Follow @${twitterUsername} on Twitter`}
                   />
                 </a>
@@ -61,18 +57,18 @@ const Page: NextPage<Props> = (props) => {
               {githubUsername && (
                 <a
                   href={`https://github.com/${githubUsername}`}
-                  className="member-header__link"
+                  className="bg-slate-300 p-2 rounded"
                 >
                   <FaGithub
-                    className="member-header__link-icon"
+                    className="text-2xl"
                     aria-label={`@${githubUsername} on GitHub`}
                   />
                 </a>
               )}
               {websiteUrl && (
-                <a href={websiteUrl} className="member-header__link">
+                <a href={websiteUrl} className="bg-slate-300 p-2 rounded">
                   <AiOutlineLink
-                    className="member-header__link-icon"
+                    className="text-2xl"
                     aria-label={`Link to website`}
                   />
                 </a>
@@ -81,42 +77,33 @@ const Page: NextPage<Props> = (props) => {
           </header>
 
           <div className="member-posts-container">
-            <PostList items={props.postItems} />
+            <PostList items={postItems} />
           </div>
         </ContentWrapper>
       </section>
     </>
   );
-};
+}
 
-export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
-  const id = params?.id as string;
+type GetPostsResponse = {
+  postItems: PostItem[];
+  member: Member;
+};
+// Define the loader function for data fetching
+async function getPosts(params: { id: string }): Promise<GetPostsResponse> {
+  const id = params.id;
   const member = getMemberById(id);
   const postItems = getMemberPostsById(id);
 
-  if (!member) throw "User not found";
+  if (!member) throw new Error("User not found");
 
   return {
-    props: {
-      member,
-      postItems,
-    },
+    // The key here can be anything, but 'props' aligns with previous patterns
+    member,
+    postItems,
   };
-};
+}
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  const memberNameList = members.map((member) => encodeURIComponent(member.id));
-  const paths = memberNameList.map((id) => {
-    return {
-      params: {
-        id,
-      },
-    };
-  });
-  return {
-    paths,
-    fallback: false,
-  };
-};
-
-export default Page;
+export async function generateStaticParams() {
+  return members.map((member) => ({ id: member.id }));
+}

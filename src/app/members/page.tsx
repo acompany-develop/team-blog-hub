@@ -8,21 +8,26 @@ import { ContentWrapper } from "@src/components/ContentWrapper";
 import { PageSEO } from "@src/components/PageSEO";
 import { getMemberPath } from "@src/utils/helper";
 import { Member } from "@src/types";
+import { Card, CardContent, CardHeader } from "@src/components/ui/card";
 
 const MemberCard: React.FC<{ member: Member }> = ({ member }) => {
   return (
     <Link href={getMemberPath(member.id)}>
-      <div className="member-card__avatar">
-        <img
-          src={member.avatarSrc}
-          alt={member.name}
-          width={80}
-          height={80}
-          className="member-card__avatar-img"
-        />
-      </div>
-      <h2 className="member-card__name"> {member.name}</h2>
-      <p className="member-card__bio">{member.bio}</p>
+      <Card className="border-none shadow-none hover:bg-slate-50 transition-all">
+        <CardHeader>
+          <img
+            src={member.avatarSrc}
+            alt={member.name}
+            width={80}
+            height={80}
+            className="member-card__avatar-img"
+          />
+        </CardHeader>
+        <CardContent>
+          <h2 className="text-lg font-bold"> {member.name}</h2>
+          <p className="text-sm">{member.bio}</p>
+        </CardContent>
+      </Card>
     </Link>
   );
 };
@@ -33,13 +38,13 @@ const Page: NextPage = () => {
       <PageSEO title="Members" path="/members" />
       <ContentWrapper>
         <section className="members">
-          <h1 className="members__title">
-            Members{" "}
-            <span className="members__title-team">
+          <h1 className="text-3xl my-5">
+            Members
+            <span className="text-base block">
               @ {config.siteMeta.teamName}
             </span>
           </h1>
-          <div className="members__cards">
+          <div className="grid grid-cols-4 gap-3">
             {members.map((member, i) => (
               <MemberCard key={`member-card-${i}`} member={member} />
             ))}

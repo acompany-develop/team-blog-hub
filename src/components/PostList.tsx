@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import Link from "next/link";
 import dayjs from "dayjs";
@@ -9,6 +10,14 @@ import {
   getMemberPath,
   getMemberById,
 } from "@src/utils/helper";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "./ui/card";
 
 dayjs.extend(relativeTime);
 
@@ -20,41 +29,49 @@ const PostLink: React.FC<{ item: PostItem }> = (props) => {
   const { hostname, origin } = new URL(link);
 
   return (
-    <article className="post-link">
-      <Link href={getMemberPath(member.id)} passHref>
-        <img
-          src={member.avatarSrc}
-          className="post-link__author-img"
-          width={35}
-          height={35}
-          alt={member.name}
-        />
-        <div className="post-link__author-name">
-          <div className="post-link__author-name">{member.name}</div>
-          <time dateTime={isoDate} className="post-link__date">
-            {dayjs(isoDate).fromNow()}
-          </time>
-        </div>
-      </Link>
-      <a href={link} className="post-link__main-link">
-        <h2 className="post-link__title">{title}</h2>
-        {hostname && (
-          <div className="post-link__site">
+    <a href={link} target="_blank">
+      <Card className="flex flex-col relative">
+        <CardHeader>
+          <CardTitle className="text-lg">{title}</CardTitle>
+          {hostname && (
+            <CardDescription className="flex gap-1 items-center justify-end">
+              <img
+                src={getFaviconSrcFromOrigin(origin)}
+                className="h-4 mt-[1px] w-auto"
+                alt={hostname}
+              />
+              {hostname}
+            </CardDescription>
+          )}
+        </CardHeader>
+        <CardContent className="h-auto">
+          {dateMiliSeconds && dateMiliSeconds > Date.now() - 86400000 * 3 && (
+            <div className="post-link__new-label">NEW</div>
+          )}
+        </CardContent>
+        <CardFooter>
+          <Link
+            href={getMemberPath(member.id)}
+            className="grid grid-rows-3 grid-flow-col gap-1"
+            passHref
+          >
             <img
-              src={getFaviconSrcFromOrigin(origin)}
-              width={14}
-              height={14}
-              className="post-link__site-favicon"
-              alt={hostname}
+              src={member.avatarSrc}
+              className="rounded-3xl row-span-3"
+              width={44}
+              height={44}
+              alt={member.name}
             />
-            {hostname}
-          </div>
-        )}
-      </a>
-      {dateMiliSeconds && dateMiliSeconds > Date.now() - 86400000 * 3 && (
-        <div className="post-link__new-label">NEW</div>
-      )}
-    </article>
+            <div className="col-span-2 row-span-3">
+              <div className="row-span-2 text-sm">{member.name}</div>
+              <time dateTime={isoDate} className="text-xs">
+                {dayjs(isoDate).fromNow()}
+              </time>
+            </div>
+          </Link>
+        </CardFooter>
+      </Card>
+    </a>
   );
 };
 
@@ -64,12 +81,14 @@ export const PostList: React.FC<{ items: PostItem[] }> = (props) => {
   const canLoadMore = totalItemsCount - displayItemsCount > 0;
 
   if (!totalItemsCount) {
-    return <div className="post-list-empty">No posts yet</div>;
+    return (
+      <div className="py-20 text-center font-bold text-lg">No posts yet</div>
+    );
   }
 
   return (
     <>
-      <div className="post-list">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 auto-rows-auto">
         {props.items.slice(0, displayItemsCount).map((item, i) => (
           <PostLink key={`post-item-${i}`} item={item} />
         ))}

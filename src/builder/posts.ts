@@ -29,13 +29,15 @@ async function fetchFeedItems(url: string) {
 
   // return item which has title and link
   return feed.items
-    .map(({ title, contentSnippet, link, isoDate }) => {
+    .map((props) => {
+      console.log("props", props);
       return {
-        title,
-        contentSnippet: contentSnippet?.replace(/\n/g, ""),
-        link,
-        isoDate,
-        dateMiliSeconds: isoDate ? new Date(isoDate).getTime() : 0,
+        title: props.title,
+        contentSnippet: props.contentSnippet?.replace(/\n/g, ""),
+        link: props.link,
+        isoDate: props.isoDate,
+        dateMiliSeconds: props.isoDate ? new Date(props.isoDate).getTime() : 0,
+        thumbnail: props.enclosure?.url ?? props.image,
       };
     })
     .filter(

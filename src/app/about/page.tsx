@@ -9,8 +9,8 @@ const Page: NextPage = () => {
       <PageSEO title="About" path="/about" />
       <ContentWrapper>
         <section className="about">
-          <h1 className="about__title">About</h1>
-          <div className="about__body">
+          <h1 className="text-3xl mt-4">About</h1>
+          <div className="mt-2">
             <p>
               このサイトはチームのためのブログスターター
               <a href="https://github.com/catnose99/team-blog-hub">
@@ -29,7 +29,7 @@ const Page: NextPage = () => {
               をご覧ください。
             </p>
           </div>
-          <div className="about__actions">
+          <div className="mt-6">
             <LinkBackHome />
           </div>
         </section>
