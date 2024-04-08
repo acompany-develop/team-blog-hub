@@ -29,12 +29,12 @@ const PostLink: React.FC<{ item: PostItem }> = (props) => {
   const { hostname, origin } = new URL(link);
 
   return (
-    <a href={link} target="_blank">
-      <Card className="flex flex-col relative">
-        <CardHeader>
+    <a href={link} target="_blank" className="flex">
+      <Card className="flex flex-col relative flex-auto hover:bg-slate-100 transition-all">
+        <CardHeader className="flex-grow">
           <CardTitle className="text-lg">{title}</CardTitle>
           {hostname && (
-            <CardDescription className="flex gap-1 items-center justify-end">
+            <CardDescription className="flex gap-1 items-center justify-end mt-1">
               <img
                 src={getFaviconSrcFromOrigin(origin)}
                 className="h-4 mt-[1px] w-auto"
@@ -44,17 +44,15 @@ const PostLink: React.FC<{ item: PostItem }> = (props) => {
             </CardDescription>
           )}
         </CardHeader>
-        <CardContent className="h-auto">
+
+        <CardContent>
           {dateMiliSeconds && dateMiliSeconds > Date.now() - 86400000 * 3 && (
             <div className="post-link__new-label">NEW</div>
           )}
         </CardContent>
+
         <CardFooter>
-          <Link
-            href={getMemberPath(member.id)}
-            className="grid grid-rows-3 grid-flow-col gap-1"
-            passHref
-          >
+          <div className="grid grid-rows-3 grid-flow-col gap-1">
             <img
               src={member.avatarSrc}
               className="rounded-3xl row-span-3"
@@ -62,13 +60,13 @@ const PostLink: React.FC<{ item: PostItem }> = (props) => {
               height={44}
               alt={member.name}
             />
-            <div className="col-span-2 row-span-3">
-              <div className="row-span-2 text-sm">{member.name}</div>
+            <span className="col-span-2 row-span-3 gap-1">
+              <span className="block row-span-2 text-sm">{member.name}</span>
               <time dateTime={isoDate} className="text-xs">
                 {dayjs(isoDate).fromNow()}
               </time>
-            </div>
-          </Link>
+            </span>
+          </div>
         </CardFooter>
       </Card>
     </a>
@@ -82,7 +80,9 @@ export const PostList: React.FC<{ items: PostItem[] }> = (props) => {
 
   if (!totalItemsCount) {
     return (
-      <div className="py-20 text-center font-bold text-lg">No posts yet</div>
+      <div className="py-20 text-center font-bold text-lg">
+        記事が投稿されていません
+      </div>
     );
   }
 

@@ -1,7 +1,6 @@
-import { NextPage, GetStaticProps, GetStaticPaths } from "next";
-import { FaTwitter, FaGithub } from "react-icons/fa";
+import { FaGithub } from "react-icons/fa";
 import { AiOutlineLink } from "react-icons/ai";
-
+import { FaXTwitter } from "react-icons/fa6";
 import { members } from "@members";
 import { PostItem, Member } from "@src/types";
 import { PostList } from "@src/components/PostList";
@@ -44,34 +43,37 @@ export default async function Page({ params }: { params: { id: string } }) {
             <p className="member-header__bio">{bio}</p>
             <div className="flex gap-2">
               {twitterUsername && (
-                <a
-                  href={`https://twitter.com/${twitterUsername}`}
-                  className="bg-slate-300 p-2 rounded"
-                >
-                  <FaTwitter
-                    className="text-2xl"
-                    aria-label={`Follow @${twitterUsername} on Twitter`}
-                  />
-                </a>
+                <PersonalLink
+                  websiteUrl={`https://twitter.com/${twitterUsername}`}
+                  icon={
+                    <FaXTwitter
+                      className="text-2xl"
+                      aria-label={`Follow @${twitterUsername} on Twitter`}
+                    />
+                  }
+                />
               )}
               {githubUsername && (
-                <a
-                  href={`https://github.com/${githubUsername}`}
-                  className="bg-slate-300 p-2 rounded"
-                >
-                  <FaGithub
-                    className="text-2xl"
-                    aria-label={`@${githubUsername} on GitHub`}
-                  />
-                </a>
+                <PersonalLink
+                  websiteUrl={`https://github.com/${githubUsername}`}
+                  icon={
+                    <FaGithub
+                      className="text-2xl"
+                      aria-label={`@${githubUsername} on GitHub`}
+                    />
+                  }
+                />
               )}
               {websiteUrl && (
-                <a href={websiteUrl} className="bg-slate-300 p-2 rounded">
-                  <AiOutlineLink
-                    className="text-2xl"
-                    aria-label={`Link to website`}
-                  />
-                </a>
+                <PersonalLink
+                  websiteUrl={websiteUrl}
+                  icon={
+                    <AiOutlineLink
+                      className="text-2xl"
+                      aria-label={`Link to website`}
+                    />
+                  }
+                />
               )}
             </div>
           </header>
@@ -84,6 +86,21 @@ export default async function Page({ params }: { params: { id: string } }) {
     </>
   );
 }
+
+type PersonalLinkProps = {
+  websiteUrl: string;
+  icon: React.ReactNode;
+};
+const PersonalLink = ({ websiteUrl, icon }: PersonalLinkProps) => {
+  return (
+    <a
+      href={websiteUrl}
+      className="text-primary p-2 rounded hover:bg-slate-300"
+    >
+      {icon}
+    </a>
+  );
+};
 
 type GetPostsResponse = {
   postItems: PostItem[];

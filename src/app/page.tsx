@@ -21,45 +21,10 @@ const Page: NextPage = () => {
         path="/"
         removeSiteNameFromTitle={true}
       />
-
-      <section className="home-hero">
-        <ContentWrapper>
-          <h1 className="text-3xl my-3">{config.siteMeta.title}</h1>
-          {!!config.siteMeta.description && (
-            <p className="text-lg font-thin my-2">
-              {config.siteMeta.description}
-            </p>
-          )}
-        </ContentWrapper>
-      </section>
-
       <section className="flex flex-col gap-8">
-        <section>
+        <section className="flex justify-between items-center -mt-16 mb-4">
           <ContentWrapper>
-            <div className="flex justify-between items-center mt-4">
-              <h2 className="text-4xl">Members</h2>
-              <Link href="/members" className="underline text-blue-600">
-                See Details →
-              </Link>
-            </div>
-
-            <div className="mt-6">
-              <UndoWrapForScroll>
-                <ScrollableMembers />
-              </UndoWrapForScroll>
-            </div>
-          </ContentWrapper>
-        </section>
-
-        <section>
-          <ContentWrapper>
-            <div className="flex justify-between items-center my-4">
-              <h2 className="text-4xl">Articles</h2>
-            </div>
-
-            <div className="home-posts-container">
-              <PostList items={posts as PostItem[]} />
-            </div>
+            <PostList items={posts as PostItem[]} />
           </ContentWrapper>
         </section>
       </section>

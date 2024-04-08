@@ -20,3 +20,7 @@ export function getFaviconSrcFromOrigin(hostname: string) {
 export function getMemberPath(id: string) {
   return `/members/${encodeURIComponent(id)}`;
 }
+
+export function getThumbnailFromOrigin(hostname: string){
+  
+}
