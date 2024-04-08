@@ -8,8 +8,8 @@ import { getMemberPath } from "@src/utils/helper";
 
 export const Sidebar = () => (
   <ContentWrapper>
-    <section className="flex flex-col gap-5">
-      <Card className="">
+    <section className="grid grid-cols-2 gap-5">
+      <Card className="col-span-2 md:col-span-1 lg:col-span-2">
         <CardHeader>
           <CardTitle>
             <a
@@ -35,7 +35,7 @@ export const Sidebar = () => (
           ))}
         </CardContent>
       </Card>
-      <Card>
+      <Card className="col-span-2  md:col-span-1 lg:col-span-2">
         <CardHeader>
           <CardTitle>Members</CardTitle>
         </CardHeader>
