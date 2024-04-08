@@ -10,7 +10,7 @@ export const SiteHeader = () => (
         href="/"
         className="flex items-center justify-between text-4xl md:text-6xl leading-normal font-bold text-primary"
       >
-        Acompany <br />
+        Xcompany <br />
         Tech Blog Hub
       </Link>
     </ContentWrapper>
